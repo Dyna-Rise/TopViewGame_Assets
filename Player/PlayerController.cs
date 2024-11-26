@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     Animator animator; //Animatorを参照予定
     bool isMoving = false; //移動中か判断するフラグ
 
+    public static int hp = 3; //プレイヤーのHP
+    public static string gameState; //ゲームのステータス管理
+    bool inDamage = false; //ダメージ中かどうかのフラグ
+
     //p1からp2の角度を返すメソッド
     float GetAngle(Vector2 p1, Vector2 p2)
     {
@@ -42,11 +46,23 @@ public class PlayerController : MonoBehaviour
     {
         rbody = GetComponent<Rigidbody2D>(); //PlayerのRigidbody2Dを参照
         animator = GetComponent<Animator>(); //PlayerのAnimatorを参照
+
+        //ゲームの状態をまずは"playing"にする
+        gameState = "playing";
     }
 
     // Update is called once per frame
     void Update()
     {
+        //ゲームステータスが"playing"以外である
+        //もしくはダメージを受けている最中
+        //の場合はUpdateは何もしない
+        if(gameState != "playing" || inDamage)
+        {
+            return;
+        }
+
+
         if (isMoving == false)
         {
             axisH = Input.GetAxisRaw("Horizontal"); //左右のキーを検知
@@ -91,6 +107,37 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        //ゲームステータスが"playing"以外である
+        //の場合はFixedUpdateは何もしない
+        if (gameState != "playing")
+        {
+            return;
+        }
+
+        if (inDamage)
+        {
+            //ダメージを受けている最中なら
+            //点滅させる（表示・非表示の連続）
+            
+            //変数valに連続的な値を授ける
+            float val = Mathf.Sin(Time.time * 50);
+            //もしその時の変数valがプラスなら
+            if(val > 0)
+            {
+                //プレイヤーは表示されている
+          gameObject.GetComponent<SpriteRenderer>().enabled = true;
+            }
+            else
+            {
+                //プレイヤーは表示されない
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            }
+
+            //そのフレームにおける点滅のための表示・非表示が決まったら、以降の処理は何もさせず、再度FixedUpdateの先頭に戻る
+            return;
+        }
+
+        //inDamageがfalseの時のみ
         //移動速度の更新
         rbody.velocity = new Vector2(axisH, axisV).normalized * speed;
     }
@@ -108,5 +155,71 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = true;
         }
+    }
+
+    //コライダー同士が接触したら発動
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        //ぶつかった相手がEnemyだったら
+        if(collision.gameObject.tag == "Enemy")
+        {
+            //ダメージをうける自作メソッドの発動
+            GetDamage(collision.gameObject);
+        }
+    }
+
+    //ダメージをうけるメソッド
+    void GetDamage(GameObject enemy)
+    {
+        //もしも"playing"中なら
+        if(gameState == "playing")
+        {
+            hp--; //HPを減らす
+
+            //HPが残っていれば
+            if(hp > 0)
+            {
+                //移動を一旦停止
+                rbody.velocity = new Vector2(0, 0);
+                //ぶつかった相手のいる方向と反対方向を割り出す
+                Vector3 v = (transform.position - enemy.transform.position).normalized;
+                //割り出した反対方向にヒットバックさせる
+                rbody.AddForce(new Vector2(v.x * 4, v.y * 4), ForceMode2D.Impulse);
+
+                //ダメージ受け中のフラグをON
+                inDamage = true;
+
+                //時間差でダメージ受け中のフラグを解除
+                Invoke("DamageEnd", 0.25f);
+            }
+            else //HPが残っていなかったら
+            {
+                //ゲームオーバーメソッドの発動
+                GameOver();
+            }
+        }
+    }
+
+    //ダメージ受け中フラグを解除する処理
+    void DamageEnd()
+    {
+        inDamage = false; //ダメージ受け中フラグをOFF
+        //場合によっては点滅の処理の途中（非表示）のタイミングでダメージ処理が終わってしまうかもしれないので、保険として明確にプレイヤーを表示状態にしておく
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    //ゲームオーバーメソッド
+    void GameOver()
+    {
+        gameState = "gameover";
+
+        //ゲームオーバー演出
+        GetComponent<CircleCollider2D>().enabled = false; //当たり判定を消す
+        rbody.velocity = new Vector2(0, 0); //動きを止める
+        rbody.gravityScale = 1; //重力復活
+        rbody.AddForce(new Vector2(0,5),ForceMode2D.Impulse); //プレイヤーを上に跳ね上げる
+
+        animator.SetBool("isDead", true); //PlayerDeadアニメの発動
+        Destroy(gameObject, 1.0f); //演出をしたら1秒後に自分を抹消
     }
 }
