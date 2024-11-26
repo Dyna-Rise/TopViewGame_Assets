@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    //アレンジ
+    GameObject player;　//スコープの兼ね合いからplayerをここで用意しておく
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        //アレンジ
+        //最初に一度だけプレイヤーオブジェクトを検索
+        player = GameObject.FindGameObjectWithTag("Player");
+
     }
 
     // Update is called once per frame
     void Update()
     {
         //プレイヤーオブジェクトを検索
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         //もしもプレイヤーがいれば処理する
         if(player != null)

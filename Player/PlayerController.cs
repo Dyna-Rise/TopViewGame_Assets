@@ -10,8 +10,12 @@ public class PlayerController : MonoBehaviour
     float axisH; //横軸の値
     float axisV; //縦軸の値
     public float angleZ = -90.0f; //回転角度
+
     Rigidbody2D rbody; //Rigidbody2Dを参照予定
     Animator animator; //Animatorを参照予定
+    SpriteRenderer sprite; //Animatorを参照予定
+    
+    
     bool isMoving = false; //移動中か判断するフラグ
 
     public static int hp = 3; //プレイヤーのHP
@@ -47,6 +51,10 @@ public class PlayerController : MonoBehaviour
         rbody = GetComponent<Rigidbody2D>(); //PlayerのRigidbody2Dを参照
         animator = GetComponent<Animator>(); //PlayerのAnimatorを参照
 
+        //アレンジ
+        sprite = GetComponent<SpriteRenderer>(); //PlayerのSpriteRendererを参照
+
+
         //ゲームの状態をまずは"playing"にする
         gameState = "playing";
     }
@@ -57,7 +65,7 @@ public class PlayerController : MonoBehaviour
         //ゲームステータスが"playing"以外である
         //もしくはダメージを受けている最中
         //の場合はUpdateは何もしない
-        if(gameState != "playing" || inDamage)
+        if (gameState != "playing" || inDamage)
         {
             return;
         }
@@ -118,19 +126,21 @@ public class PlayerController : MonoBehaviour
         {
             //ダメージを受けている最中なら
             //点滅させる（表示・非表示の連続）
-            
+
             //変数valに連続的な値を授ける
             float val = Mathf.Sin(Time.time * 50);
             //もしその時の変数valがプラスなら
-            if(val > 0)
+            if (val > 0)
             {
                 //プレイヤーは表示されている
-          gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                //gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                sprite.enabled = true;
             }
             else
             {
                 //プレイヤーは表示されない
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                //gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                sprite.enabled = false;
             }
 
             //そのフレームにおける点滅のための表示・非表示が決まったら、以降の処理は何もさせず、再度FixedUpdateの先頭に戻る
@@ -147,7 +157,7 @@ public class PlayerController : MonoBehaviour
     {
         axisH = h;
         axisV = v;
-        if(axisH == 0 && axisV == 0)
+        if (axisH == 0 && axisV == 0)
         {
             isMoving = false;
         }
@@ -161,7 +171,7 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         //ぶつかった相手がEnemyだったら
-        if(collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy")
         {
             //ダメージをうける自作メソッドの発動
             GetDamage(collision.gameObject);
@@ -172,12 +182,12 @@ public class PlayerController : MonoBehaviour
     void GetDamage(GameObject enemy)
     {
         //もしも"playing"中なら
-        if(gameState == "playing")
+        if (gameState == "playing")
         {
             hp--; //HPを減らす
 
             //HPが残っていれば
-            if(hp > 0)
+            if (hp > 0)
             {
                 //移動を一旦停止
                 rbody.velocity = new Vector2(0, 0);
@@ -217,7 +227,7 @@ public class PlayerController : MonoBehaviour
         GetComponent<CircleCollider2D>().enabled = false; //当たり判定を消す
         rbody.velocity = new Vector2(0, 0); //動きを止める
         rbody.gravityScale = 1; //重力復活
-        rbody.AddForce(new Vector2(0,5),ForceMode2D.Impulse); //プレイヤーを上に跳ね上げる
+        rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse); //プレイヤーを上に跳ね上げる
 
         animator.SetBool("isDead", true); //PlayerDeadアニメの発動
         Destroy(gameObject, 1.0f); //演出をしたら1秒後に自分を抹消
