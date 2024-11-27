@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rbody; //Rigidbody2Dを参照予定
     Animator animator; //Animatorを参照予定
-    SpriteRenderer sprite; //Animatorを参照予定
-    
-    
+
+    //アレンジ
+    SpriteRenderer sprite; //SpriteRendererを参照予定
+
+
     bool isMoving = false; //移動中か判断するフラグ
 
     public static int hp = 3; //プレイヤーのHP
@@ -134,12 +136,14 @@ public class PlayerController : MonoBehaviour
             {
                 //プレイヤーは表示されている
                 //gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                //アレンジ
                 sprite.enabled = true;
             }
             else
             {
                 //プレイヤーは表示されない
                 //gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                //アレンジ
                 sprite.enabled = false;
             }
 
@@ -173,8 +177,12 @@ public class PlayerController : MonoBehaviour
         //ぶつかった相手がEnemyだったら
         if (collision.gameObject.tag == "Enemy")
         {
-            //ダメージをうける自作メソッドの発動
-            GetDamage(collision.gameObject);
+            //すでにダメージ中であれば発動しない※無敵時間
+            if (!inDamage)
+            {
+                //ダメージをうける自作メソッドの発動
+                GetDamage(collision.gameObject);
+            }
         }
     }
 
