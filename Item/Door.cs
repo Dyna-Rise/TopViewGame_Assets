@@ -32,7 +32,7 @@ public class Door : MonoBehaviour
                 {
                     //ゴールドキーを消耗
                     ItemKeeper.hasGoldKeys--;
-                    Destroy(gameObject); //自分を削除
+                    Destroy(this.gameObject); //自分を削除
                 }
             }
             else //自分がゴールドではない
