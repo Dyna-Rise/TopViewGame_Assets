@@ -67,7 +67,7 @@ public class ItemData : MonoBehaviour
 
             //アイテム取得の演出
             //当たり判定を消す
-            gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            GetComponent<CircleCollider2D>().enabled = false;
             //Rigidbody2Dを操作する
             Rigidbody2D itemBody = GetComponent<Rigidbody2D>();
             //重力を戻す
