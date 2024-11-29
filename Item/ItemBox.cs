@@ -27,8 +27,7 @@ public class ItemBox : MonoBehaviour
         if (isClosed && collision.gameObject.tag == "Player")
         {
             //フタが閉まっているアイ状態でプレイヤーに接触したら
-            GetComponent<SpriteRenderer>().sprite
-                = openImage;
+            GetComponent<SpriteRenderer>().sprite = openImage;
             isClosed = false; //閉じるフラグをオフに
             if (itemPrefab != null)
             {
