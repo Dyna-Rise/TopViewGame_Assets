@@ -16,24 +16,26 @@ public class EnemyController : MonoBehaviour
     Animator animator;          //Animator
     bool isActive = false;      //アクティブフラグ
 
-    public int arrangeId = 0;   
+    public int arrangeId = 0;
+
+    GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
         rbody = GetComponent<Rigidbody2D>();    // Rigidbody2Dを参照する
         animator = GetComponent<Animator>();    //Animatorを参照する
+
+        // Playerのゲームオブジェクトを得る
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
         //移動値初期化
-        axisH = 0;
-        axisV = 0;
-
-        // Playerのゲームオブジェクトを得る
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //axisH = 0;
+        //axisV = 0;
 
         if (player != null)
         {
@@ -61,7 +63,9 @@ public class EnemyController : MonoBehaviour
                 //animator.SetBool("IsActive", isActive);
 
                 // プレイヤーへの角度を求める
-                float dx = player.transform.position.x - transform.position.x; float dy = player.transform.position.y - transform.position.y; float rad = Mathf.Atan2(dy, dx);
+                float dx = player.transform.position.x - transform.position.x;
+                float dy = player.transform.position.y - transform.position.y;
+                float rad = Mathf.Atan2(dy, dx);
                 //ラジアン（円周率）で結果を取得するのでオイラー角度に変換
                 float angle = rad * Mathf.Rad2Deg;
 
