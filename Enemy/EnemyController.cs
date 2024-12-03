@@ -51,52 +51,51 @@ public class EnemyController : MonoBehaviour
             {
                 isActive = false;    // 非アクティブにする（まだアニメは切り替えていない）
             }
+
+            // アニメーションを切り替える
+            animator.SetBool("IsActive", isActive);
+
+            //もしもアクティブだった場合はプレイヤーを追いかける
+            //動作の元となる数字を決める
+            if (isActive)
+            {
+                //テキストでは書いてありますが特に必要ない
+                //animator.SetBool("IsActive", isActive);
+
+                // プレイヤーへの角度を求める
+                float dx = player.transform.position.x - transform.position.x;
+                float dy = player.transform.position.y - transform.position.y;
+                float rad = Mathf.Atan2(dy, dx);
+                //ラジアン（円周率）で結果を取得するのでオイラー角度に変換
+                float angle = rad * Mathf.Rad2Deg;
+
+                // 移動角度でEnemyのアニメーションを変更する
+                int direction;
+                if (angle > -45.0f && angle <= 45.0f)
+                {
+                    direction = 3;    //右向き（まだアニメは切り替えていない）
+                }
+                else if (angle > 45.0f && angle <= 135.0f)
+                {
+                    direction = 2;    //上向き（まだアニメは切り替えていない）
+                }
+                else if (angle >= -135.0f && angle <= -45.0f)
+                {
+                    direction = 0;    //下向き（まだアニメは切り替えていない）
+                }
+                else
+                {
+                    direction = 1;    //左向き（まだアニメは切り替えていない）
+                }
+
+                //アニメの切り替え
+                animator.SetInteger("Direction", direction);
+
+                // 移動するベクトルを作る
+                axisH = Mathf.Cos(rad) * speed;
+                axisV = Mathf.Sin(rad) * speed;
+            }
         }
-
-        // アニメーションを切り替える
-        animator.SetBool("IsActive", isActive);
-
-        //もしもアクティブだった場合はプレイヤーを追いかける
-        //動作の元となる数字を決める
-        if (isActive)
-        {
-            //テキストでは書いてありますが特に必要ない
-            //animator.SetBool("IsActive", isActive);
-
-            // プレイヤーへの角度を求める
-            float dx = player.transform.position.x - transform.position.x;
-            float dy = player.transform.position.y - transform.position.y;
-            float rad = Mathf.Atan2(dy, dx);
-            //ラジアン（円周率）で結果を取得するのでオイラー角度に変換
-            float angle = rad * Mathf.Rad2Deg;
-
-            // 移動角度でEnemyのアニメーションを変更する
-            int direction;
-            if (angle > -45.0f && angle <= 45.0f)
-            {
-                direction = 3;    //右向き（まだアニメは切り替えていない）
-            }
-            else if (angle > 45.0f && angle <= 135.0f)
-            {
-                direction = 2;    //上向き（まだアニメは切り替えていない）
-            }
-            else if (angle >= -135.0f && angle <= -45.0f)
-            {
-                direction = 0;    //下向き（まだアニメは切り替えていない）
-            }
-            else
-            {
-                direction = 1;    //左向き（まだアニメは切り替えていない）
-            }
-
-            //アニメの切り替え
-            animator.SetInteger("Direction", direction);
-
-            // 移動するベクトルを作る
-            axisH = Mathf.Cos(rad) * speed;
-            axisV = Mathf.Sin(rad) * speed;
-        }
-
         else //プレイヤーが見当たらなければ 眠っている
         {
             isActive = false;
