@@ -81,4 +81,15 @@ public class VirtualPad : MonoBehaviour
         plcnt.SetAxis(0, 0);
     }
 
+    //攻撃メソッドの追加
+    public void Attack()
+    {
+        //プレイヤーを見つける
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //プレイヤーがみつかったら、プレイヤーが持っているArrowShootスクリプトの能力を使いたい
+        ArrowShoot shoot = player.GetComponent<ArrowShoot>();
+        //プレイヤーが持っているAttackメソッドを発動
+        shoot.Attack();
+    }
+
 }
