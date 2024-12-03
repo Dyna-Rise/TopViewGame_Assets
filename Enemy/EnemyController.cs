@@ -51,51 +51,52 @@ public class EnemyController : MonoBehaviour
             {
                 isActive = false;    // 非アクティブにする（まだアニメは切り替えていない）
             }
-
-            // アニメーションを切り替える
-            animator.SetBool("IsActive", isActive);
-
-            //もしもアクティブだった場合はプレイヤーを追いかける
-            //動作の元となる数字を決める
-            if (isActive)
-            {
-                //テキストでは書いてありますが特に必要ない
-                //animator.SetBool("IsActive", isActive);
-
-                // プレイヤーへの角度を求める
-                float dx = player.transform.position.x - transform.position.x;
-                float dy = player.transform.position.y - transform.position.y;
-                float rad = Mathf.Atan2(dy, dx);
-                //ラジアン（円周率）で結果を取得するのでオイラー角度に変換
-                float angle = rad * Mathf.Rad2Deg;
-
-                // 移動角度でEnemyのアニメーションを変更する
-                int direction;
-                if (angle > -45.0f && angle <= 45.0f)
-                {
-                    direction = 3;    //右向き（まだアニメは切り替えていない）
-                }
-                else if (angle > 45.0f && angle <= 135.0f)
-                {
-                    direction = 2;    //上向き（まだアニメは切り替えていない）
-                }
-                else if (angle >= -135.0f && angle <= -45.0f)
-                {
-                    direction = 0;    //下向き（まだアニメは切り替えていない）
-                }
-                else
-                {
-                    direction = 1;    //左向き（まだアニメは切り替えていない）
-                }
-
-                //アニメの切り替え
-                animator.SetInteger("Direction", direction);
- 
-                // 移動するベクトルを作る
-                axisH = Mathf.Cos(rad) * speed;
-                axisV = Mathf.Sin(rad) * speed;
-            }
         }
+
+        // アニメーションを切り替える
+        animator.SetBool("IsActive", isActive);
+
+        //もしもアクティブだった場合はプレイヤーを追いかける
+        //動作の元となる数字を決める
+        if (isActive)
+        {
+            //テキストでは書いてありますが特に必要ない
+            //animator.SetBool("IsActive", isActive);
+
+            // プレイヤーへの角度を求める
+            float dx = player.transform.position.x - transform.position.x;
+            float dy = player.transform.position.y - transform.position.y;
+            float rad = Mathf.Atan2(dy, dx);
+            //ラジアン（円周率）で結果を取得するのでオイラー角度に変換
+            float angle = rad * Mathf.Rad2Deg;
+
+            // 移動角度でEnemyのアニメーションを変更する
+            int direction;
+            if (angle > -45.0f && angle <= 45.0f)
+            {
+                direction = 3;    //右向き（まだアニメは切り替えていない）
+            }
+            else if (angle > 45.0f && angle <= 135.0f)
+            {
+                direction = 2;    //上向き（まだアニメは切り替えていない）
+            }
+            else if (angle >= -135.0f && angle <= -45.0f)
+            {
+                direction = 0;    //下向き（まだアニメは切り替えていない）
+            }
+            else
+            {
+                direction = 1;    //左向き（まだアニメは切り替えていない）
+            }
+
+            //アニメの切り替え
+            animator.SetInteger("Direction", direction);
+
+            // 移動するベクトルを作る
+            axisH = Mathf.Cos(rad) * speed;
+            axisV = Mathf.Sin(rad) * speed;
+        }
+
         else //プレイヤーが見当たらなければ 眠っている
         {
             isActive = false;
@@ -124,7 +125,7 @@ public class EnemyController : MonoBehaviour
         //相手が矢だったらダメージ
         if (collision.gameObject.tag == "Arrow")
         {
-            
+
             hp--;//ダメージ
 
             //もし0以下になったら死亡
@@ -136,8 +137,16 @@ public class EnemyController : MonoBehaviour
                 GetComponent<CircleCollider2D>().enabled = false;
                 //移動停止
                 rbody.velocity = Vector2.zero;
+
                 //アニメーションを切り替える
-                animator.SetBool("IsDead", true);
+                //animator.SetBool("IsDead", true);
+
+                //anyStateからの移行は他の設定との競合で正常に動作しない
+                //HasExitTimeを使っての移行はタイムラグが生じてしまう
+                //細かい調整で改善の余地ありだが、それぞれの状況による
+                //よって別の解決方法として、強制的にアニメを流す
+                animator.Play("EnemyDead");
+
                 //0.５秒後に消す
                 Destroy(gameObject, 0.5f);
             }
