@@ -21,18 +21,18 @@ public class ItemData : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
             //金の鍵なら
             if (type == ItemType.GoldKey)
@@ -53,16 +53,18 @@ public class ItemData : MonoBehaviour
             else if (type == ItemType.Life)
             {
                 //ライフ
-                if(PlayerController.hp < 3)
+                if (PlayerController.hp < 3)
                 {
                     //HPが3未満の場合は回復する
                     PlayerController.hp++;
                 }
             }
-            else if(type == ItemType.Light)
+            else if (type == ItemType.Light)
             {
                 //ライト
                 ItemKeeper.hasLights += count;
+                //ライトを拾ったらPlayerの子オブジェクトであるLight2Dの距離とアイテム数を連動
+                GameObject.FindObjectOfType<PlayerLightController>().LightUpdate();
             }
 
             //アイテム取得の演出
@@ -74,7 +76,7 @@ public class ItemData : MonoBehaviour
             itemBody.gravityScale = 2.5f;
 
             //上に少し跳ねあがる演出
-            itemBody.AddForce(new Vector2(0,6),ForceMode2D.Impulse);
+            itemBody.AddForce(new Vector2(0, 6), ForceMode2D.Impulse);
 
             //0.5秒
             Destroy(gameObject, 0.5f);

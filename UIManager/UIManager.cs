@@ -11,21 +11,30 @@ public class UIManager : MonoBehaviour
     int hasGoldKeys = 0;                //金のカギの数
     int hasArrows = 0;                  //矢の所持数
     int hasLights = 0;                  //ライトの所持数
+    
     int hp = 0;                         //プレイヤーのHP
+    
     public GameObject SilverKeyText;    //銀のカギ数を表示するText
     public GameObject GoldKeyText;      //金のカギ数を表示するText
     public GameObject arrowText;        //矢の数を表示するText
     public GameObject lightText;        //ライトの数を表示するText
+    
     public GameObject lifeImage;        //Hの数を表示するImage
+
     public Sprite life3Image;           //HP3画像
     public Sprite life2Image;           //HP2画像
     public Sprite life1Image;           //HP1画像
     public Sprite life0Image;           //HP0画像
+    
     public GameObject mainImage;        // 画像を持つGameObject
-    public GameObject retryButton;      // リトライボタン
+
     public Sprite gameOverSpr;          // GAME OVER画像
     public Sprite gameClearSpr;         // GAME CLEAR画像
+
+    public GameObject retryButton;      // リトライボタン
+    
     public GameObject inputPanel;       //バーチャルパッドと攻撃ボタンを配置した操作パネル
+
     public string retrySceneName = "";  //リトライするシーン名
 
     //アイテム数更新
