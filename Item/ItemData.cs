@@ -57,6 +57,8 @@ public class ItemData : MonoBehaviour
                 {
                     //HPが3未満の場合は回復する
                     PlayerController.hp++;
+                    //HPを保存
+                    PlayerPrefs.SetInt("PlayerHP", PlayerController.hp);
                 }
             }
             else if (type == ItemType.Light)

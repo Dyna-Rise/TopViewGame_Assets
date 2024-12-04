@@ -59,6 +59,9 @@ public class PlayerController : MonoBehaviour
 
         //ゲームの状態をまずは"playing"にする
         gameState = "playing";
+
+        //HPの更新
+        hp = PlayerPrefs.GetInt("PlayerHP");
     }
 
     // Update is called once per frame
@@ -193,6 +196,8 @@ public class PlayerController : MonoBehaviour
         if (gameState == "playing")
         {
             hp--; //HPを減らす
+            //HPの保存
+            PlayerPrefs.SetInt("PlayerHP", hp);
 
             //HPが残っていれば
             if (hp > 0)
