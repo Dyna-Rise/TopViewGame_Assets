@@ -148,6 +148,9 @@ public class EnemyController : MonoBehaviour
 
                 //0.５秒後に消す
                 Destroy(gameObject, 0.5f);
+
+                //倒した敵という一時記録をとる
+                SaveDataManager.SetArrangeId(arrangeId, gameObject.tag);
             }
         }
     }

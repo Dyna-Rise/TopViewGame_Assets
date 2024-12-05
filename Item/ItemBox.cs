@@ -34,6 +34,10 @@ public class ItemBox : MonoBehaviour
                 //指定したアイテムを生成
                 Instantiate(itemPrefab, transform.position, Quaternion.identity);
             }
+
+            //宝箱を開けたという一時記録をとる
+            SaveDataManager.SetArrangeId(arrangeId,gameObject.tag);
+
         }
     }
 }

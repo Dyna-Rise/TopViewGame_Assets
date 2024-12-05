@@ -83,6 +83,8 @@ public class ItemData : MonoBehaviour
             //0.5秒
             Destroy(gameObject, 0.5f);
 
+            //アイテムを取得したという一時記録をとる
+            SaveDataManager.SetArrangeId(arrangeId, gameObject.tag);
         }
     }
 }

@@ -33,6 +33,9 @@ public class Door : MonoBehaviour
                     //ゴールドキーを消耗
                     ItemKeeper.hasGoldKeys--;
                     Destroy(this.gameObject); //自分を削除
+
+                    //ドアを開けたという一時記録をとる
+                    SaveDataManager.SetArrangeId(arrangeId, gameObject.tag);
                 }
             }
             else //自分がゴールドではない
@@ -43,6 +46,9 @@ public class Door : MonoBehaviour
                     //シルバーキーを消耗
                     ItemKeeper.hasSilverKeys--;
                     Destroy(gameObject); //自分を削除
+                    
+                    //ドアを開けたという一時記録をとる
+                    SaveDataManager.SetArrangeId(arrangeId, gameObject.tag);
                 }
             }
         }

@@ -76,6 +76,25 @@ public class RoomManager : MonoBehaviour
     public static void ChangeScene(string scenename,int doornum)
     {
         doorNumber = doornum; //引数を通して情報として与えられたドア番号をstatic変数のdoorNumberに記憶しておく
+
+        string nowScene = PlayerPrefs.GetString("LastScene");
+        if(nowScene != "")
+        {
+            //引数に指定したキーワード（シーン名）のMAPデータを上書き
+            SaveDataManager.SaveArrangeData(nowScene);
+        }
+
+        //今から行こうとしている目的シーン(変数scenename)
+        //の情報にLastSceneキーワードのデータを書き換え
+        //※次に備えて
+        PlayerPrefs.SetString("LastScene", scenename);
+
+        //ゲームを止めた後もどのExitをくぐったか情報が残るように
+        PlayerPrefs.SetInt("LastDoor", doornum);
+
+        //所持アイテムの記憶
+        ItemKeeper.SaveItem();
+
         SceneManager.LoadScene(scenename); //シーン移動
     }
 
