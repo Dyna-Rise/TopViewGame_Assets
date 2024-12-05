@@ -110,7 +110,11 @@ public class UIManager : MonoBehaviour
     public void Retry()
     {
         //HPを戻す
-        PlayerController.hp = 3;
+        //PlayerController.hp = 3;
+        
+        //PlayerPrefsの情報を3に戻しておく
+        PlayerPrefs.SetInt("PlayerHP", 3);
+
 
         //ゲーム中に戻す
         SceneManager.LoadScene(retrySceneName);   //シーン移動
