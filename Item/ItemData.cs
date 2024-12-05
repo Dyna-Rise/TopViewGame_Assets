@@ -16,7 +16,7 @@ public class ItemData : MonoBehaviour
 {
     public ItemType type;
     public int count = 1;
-    public int aranngeId = 0;
+    public int arrangeId = 0;
 
     // Start is called before the first frame update
     void Start()
