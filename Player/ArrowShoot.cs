@@ -56,7 +56,11 @@ public class ArrowShoot : MonoBehaviour
 
             //矢を放ったのでshootDelay秒後にstopAttackメソッド（自作メソッド）を発動し攻撃中フラグを解除
             Invoke("StopAttack", shootDelay);
+
+            //矢のSEを鳴らす
+            SoundManager.soundManager.SEPlay(SEType.Shoot);
         }
+
     }
 
     //攻撃中フラグを下げるメソッド

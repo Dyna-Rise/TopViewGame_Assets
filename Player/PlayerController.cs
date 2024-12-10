@@ -244,5 +244,10 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("isDead", true); //PlayerDeadアニメの発動
         Destroy(gameObject, 1.0f); //演出をしたら1秒後に自分を抹消
+
+        //BGM停止
+        SoundManager.soundManager.StopBgm();
+        //ゲームオーバーSE再生
+        SoundManager.soundManager.SEPlay(SEType.GameOver);
     }
 }

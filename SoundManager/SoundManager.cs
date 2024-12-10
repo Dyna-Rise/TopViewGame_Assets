@@ -79,6 +79,7 @@ public class SoundManager : MonoBehaviour
             audio.Play();
         }
     }
+
     //BGM停止
     public void StopBgm()
     {

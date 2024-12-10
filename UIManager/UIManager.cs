@@ -115,6 +115,8 @@ public class UIManager : MonoBehaviour
         //PlayerPrefsの情報を3に戻しておく
         PlayerPrefs.SetInt("PlayerHP", 3);
 
+        //BGMをクリア
+        SoundManager.playingBGM = BGMType.None;
 
         //ゲーム中に戻す
         SceneManager.LoadScene(retrySceneName);   //シーン移動

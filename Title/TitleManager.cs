@@ -28,6 +28,9 @@ public class TitleManager : MonoBehaviour
         {
             continueButton.GetComponent<Button>().interactable = true; //コンティニューボタンを有効
         }
+
+        //タイトルBGM再生
+        SoundManager.soundManager.PlayBgm(BGMType.Title);
     }
 
     // Update is called once per frame

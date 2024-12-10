@@ -39,6 +39,12 @@ public class Exit : MonoBehaviour
         {
             if(doorNumber == 100)
             {
+                //BGM停止
+                SoundManager.soundManager.StopBgm();
+
+                //ゲームクリアSE再生
+                SoundManager.soundManager.SEPlay(SEType.GameClear);
+
                 //ゲームクリアの発動
                 GameObject.FindObjectOfType<UIManager>().GameClear();
             }
