@@ -21,7 +21,7 @@ public class ObjectGenManager : MonoBehaviour
         for (int i = 0; i < items.Length; i++)
         {
             ItemData item = items[i];
-            if (item.type == ItemType.arrow)
+            if (item.type == ItemType.Arrow)
             {
                 return; //矢があれば何もせずにメソッドを抜ける
             }

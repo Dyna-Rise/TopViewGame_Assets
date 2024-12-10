@@ -143,6 +143,26 @@ public class UIManager : MonoBehaviour
         UpdateHP();         //HP更新
     }
 
+    public void GameClear()
+    {
+        //画像表示
+        mainImage.SetActive(true);
+        mainImage.GetComponent <Image>().sprite = gameClearSpr;
 
+        //スマホ操作のパネル非表示
+        inputPanel.SetActive(false);
+
+        //ゲームステータスをゲームクリア
+        PlayerController.gameState = "gameclear";
+
+        //3秒後にタイトルに戻る
+        Invoke("GoToTitle",3.0f);
+    }
+
+    void GoToTitle()
+    {
+        PlayerPrefs.DeleteKey("LastScene"); //保存シーンを削除
+        SceneManager.LoadScene("Title"); //タイトルに戻る
+    }
     
 }
